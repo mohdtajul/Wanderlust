@@ -18,8 +18,8 @@ router.post(
         const newUser = new User({email,username})
         const registeredUser = await User.register(newUser,password)
         console.log(registeredUser)
-        req.login(registerdUser,(err)=>{
-            if(err){use 
+        req.login(registeredUser,(err)=>{
+            if(err){ 
                 return next(err)
             }
             req.flash("success", "welcome to wanderlust")
@@ -38,7 +38,7 @@ router.get("/login", (req,res)=>{
 
 router.post(
     "/login",
-    saveRedirectUrl,
+
      passport.authenticate('local', { 
         failureRedirect: '/login',
         failureFlash: true,
@@ -46,7 +46,7 @@ router.post(
     async (req,res)=>{
         req.flash("success", "Welcome back to Wanderlust")
         let redirectUrl = res.locals.redirectUrl || "/listings"
-        res.render(redirectUrl)
+        res.redirect(redirectUrl)
 })
 
 router.get("/logout",(req,res,next)=>{
@@ -55,7 +55,7 @@ router.get("/logout",(req,res,next)=>{
             return next(err);
         }
         req.flash("success", "you are logged out!")
-        res.redirect("/listigns")
+        res.redirect("/listings")
 
     })
 })
