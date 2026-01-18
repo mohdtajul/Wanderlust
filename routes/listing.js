@@ -31,16 +31,18 @@ router.get("/new",isLoggedIn,(req,res)=>{
 })
 
 router.get("/:id", wrapAsync(async (req, res) => {
-    const listing = await Listing.findById(req.params.id).populate("reviews").populate("owner"); //  MOST IMPORTANT
-    if(!listing){
-        req.flash("error", "Listing you requested for doesn't exist !")
-        res.redirect("/listings")
-    }else{
+  const listing = await Listing
+    .findById(req.params.id)
+    .populate("reviews")
+    .populate("owner");
 
-        res.render("listings/show.ejs", { listing });
-    }
+  if (!listing) {
+    req.flash("error", "Listing you requested for doesn't exist!");
+    return res.redirect("/listings");
+  }
+
+  res.render("listings/show.ejs", { listing });
 }));
-
 
 // CREATE API Call || create route
 
