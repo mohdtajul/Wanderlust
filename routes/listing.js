@@ -1,87 +1,30 @@
-const express = require("express")
-const router = express.Router()
-const wrapAsync = require("../utils/wrapAsync.js")
-const Listing = require("../models/listing.js") // model imported
-const { isLoggedIn, isOwner,validateListing } = require("../middleware.js");
+const express = require("express");
+const router = express.Router();
+const wrapAsync = require("../utils/wrapAsync.js");
+const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
+const ListingController = require("../controllers/listings.js");
+
+// INDEX
+router.get("/", wrapAsync(ListingController.index));
+
+// NEW
+router.get("/new", isLoggedIn, ListingController.renderNewForm);
+
+// SHOW  ⭐ ALWAYS LAST
+router.get("/:id", wrapAsync(ListingController.showListing));
+
+// CREATE
+router.post("/new", isLoggedIn, validateListing, wrapAsync(ListingController.createListing));
+
+// EDIT  ⭐ MUST be before :id
+router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(ListingController.renderEditForm));
+
+// UPDATE
+router.put("/:id", isLoggedIn, isOwner, validateListing, wrapAsync(ListingController.updateListing));
+
+// DELETE
+router.delete("/:id", isLoggedIn, isOwner, wrapAsync(ListingController.destroyListing));
 
 
-// READ data API Call || read route
-router.get("/",wrapAsync(async (req,res)=>{
-    const allListings = await Listing.find({}) // mongo se pura listings collection ka data liya h
-    res.render("listings/index.ejs",{allListings})
-
-    })
-)
-
-router.get("/new",isLoggedIn,(req,res)=>{
-    res.render("listings/newplace.ejs") // rendering form to get data for listing 
-})
-
-router.get("/:id", wrapAsync(async (req, res) => {
-  const listing = await Listing
-    .findById(req.params.id)
-    .populate("reviews")
-    .populate("owner");
-
-  if (!listing) {
-    req.flash("error", "Listing you requested for doesn't exist!");
-    return res.redirect("/listings");
-  }
-
-  res.render("listings/show.ejs", { listing });
-}));
-
-// CREATE API Call || create route
-
-router.post("/new",validateListing, wrapAsync(async (req,res,next)=>{
-        const newListing = new Listing(req.body.listing);
-        newListing.owner=req.user._id;
-        await newListing.save();
-        req.flash("success", "New Listing Created")
-        res.redirect("/listings")
-    })
-);
-    
-router.get("/:id/edit",isLoggedIn,wrapAsync(async (req,res)=>{
-    let {id} = req.params
-    const listing = await Listing.findById(id)
-    if(!listing){
-        req.flash("error", "Listing you requested for doesn't exist !")
-        res.redirect("/listings")
-    }else{
-        res.render("listings/edit.ejs",{listing})
-
-    }
-    })
-)
-
-// UPDATE API Call || update route
-router.put("/:id",isLoggedIn,isOwner,validateListing, wrapAsync(async(req,res)=>{
-
-    let {id}= req.params
-    let {listing} = req.body
-    const updatedData = await Listing.findByIdAndUpdate(id,{
-        title: listing.title,
-        description: listing.description,
-        image: { url: listing.image.url },
-        price: listing.price,
-        location: listing.location,
-        country: listing.country
-   })
-    req.flash("success", "Listing Updated")
-    res.redirect("/listings")
-
-    })
-)
-
-// DELETE API Call || delete route
-router.delete("/:id",isLoggedIn,wrapAsync(async(req,res)=>{
-    let {id} = req.params
-    await Listing.findByIdAndDelete(id)
-    req.flash("success", "Listing Deleted")
-    res.redirect("/listings")
-
-    })
-)
 
 module.exports = router;
