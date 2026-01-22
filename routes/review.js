@@ -10,7 +10,7 @@ const {validateReview,isLoggedIn} = require('../middleware.js')
 router.post("/",validateReview,isLoggedIn,wrapAsync(async(req,res)=>{
         let listing = await Listing.findById(req.params.id)
         let newReview = new Review(req.body.review)
-        newReview.autor = req.user._id
+        newReview.author = req.user._id
         listing.reviews.push(newReview)
         await newReview.save()
         await listing.save()
@@ -24,6 +24,7 @@ router.post("/",validateReview,isLoggedIn,wrapAsync(async(req,res)=>{
 // Delete reviews route
 router.delete(
     "/:reviewId",
+    isLoggedIn,
     wrapAsync(async(req,res)=>{
         let {id, reviewId} = req.params;
 
