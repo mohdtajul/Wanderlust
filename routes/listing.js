@@ -8,15 +8,14 @@ const ListingController = require("../controllers/listings.js");
 router.route('/')
     .get(wrapAsync(ListingController.index))
 
+    router.route('/new')
+    .get( isLoggedIn, ListingController.renderNewForm)
+    .post( isLoggedIn, validateListing, wrapAsync(ListingController.createListing))
+
 router.route("/:id")
     .get( wrapAsync(ListingController.showListing))
     .put( isLoggedIn, isOwner, validateListing, wrapAsync(ListingController.updateListing))
     .delete( isLoggedIn, isOwner, wrapAsync(ListingController.destroyListing))
-
-router.route('/new')
-    .get( isLoggedIn, ListingController.renderNewForm)
-    .post( isLoggedIn, validateListing, wrapAsync(ListingController.createListing))
-
 
 router.route("/:id/edit")
     .get( isLoggedIn, isOwner, wrapAsync(ListingController.renderEditForm))
