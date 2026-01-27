@@ -4,27 +4,22 @@ const wrapAsync = require("../utils/wrapAsync.js");
 const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
 const ListingController = require("../controllers/listings.js");
 
-// INDEX
-router.get("/", wrapAsync(ListingController.index));
 
-// NEW
-router.get("/new", isLoggedIn, ListingController.renderNewForm);
+router.route('/')
+    .get(wrapAsync(ListingController.index))
 
-// SHOW  ⭐ ALWAYS LAST
-router.get("/:id", wrapAsync(ListingController.showListing));
+router.route("/:id")
+    .get( wrapAsync(ListingController.showListing))
+    .put( isLoggedIn, isOwner, validateListing, wrapAsync(ListingController.updateListing))
+    .delete( isLoggedIn, isOwner, wrapAsync(ListingController.destroyListing))
 
-// CREATE
-router.post("/new", isLoggedIn, validateListing, wrapAsync(ListingController.createListing));
+router.route('/new')
+    .get( isLoggedIn, ListingController.renderNewForm)
+    .post( isLoggedIn, validateListing, wrapAsync(ListingController.createListing))
 
-// EDIT  ⭐ MUST be before :id
-router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(ListingController.renderEditForm));
 
-// UPDATE
-router.put("/:id", isLoggedIn, isOwner, validateListing, wrapAsync(ListingController.updateListing));
-
-// DELETE
-router.delete("/:id", isLoggedIn, isOwner, wrapAsync(ListingController.destroyListing));
-
+router.route("/:id/edit")
+    .get( isLoggedIn, isOwner, wrapAsync(ListingController.renderEditForm))
 
 
 module.exports = router;
