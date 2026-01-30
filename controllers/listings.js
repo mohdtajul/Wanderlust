@@ -4,7 +4,7 @@ module.exports.index = async (req,res)=>{
     const allListings = await Listing.find({}) // mongo se pura listings collection ka data liya h
     res.render("listings/index.ejs",{allListings})
 
-    }
+}
 
 module.exports.renderNewForm = (req,res)=>{
     res.render("listings/newplace.ejs") // rendering form to get data for listing 
@@ -66,7 +66,7 @@ module.exports.updateListing = async (req, res) => {
         location: listing.location,
         country: listing.country
       },
-      { new: true }   // ⭐ IMPORTANT
+      { new: true }  
     );
 
     if (!updatedListing) {
