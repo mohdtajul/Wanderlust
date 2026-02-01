@@ -14,7 +14,8 @@ router.route('/')
     .get( isLoggedIn, ListingController.renderNewForm)
     // .post( isLoggedIn, validateListing, wrapAsync(ListingController.createListing))
     .post(upload.single('listing[image][url]'), function (req, res, next) {
-        res.send(req.file);
+        res.redirect('/listings')
+        // res.send(req.file);
 })
 
 router.route("/:id")
