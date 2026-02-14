@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express")
 const app = express()
 const mongoose = require("mongoose")
@@ -15,7 +16,6 @@ const listingRouter = require("./routes/listing.js") // listing routes ka group
 const reviewRouter = require("./routes/review.js") // review routes ka group
 const userRouter = require("./routes/user.js")
 
-require('dotenv').config();
 
 
 const port = process.env.PORT || 8080
