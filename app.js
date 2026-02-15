@@ -47,10 +47,6 @@ const sessionOptions = {
     }
 }
 
-app.get("/",(req,res)=>{
-    res.redirect("/listings");
-})
-
 app.use(session(sessionOptions))
 app.use(flash())
 
@@ -68,23 +64,11 @@ app.use((req,res,next)=>{
     next()
 })
 
-// app.get("/demouser",async(req,res)=>{
-//     let fakeUser = new User({
-//         email: "student@gmail.com",
-//         username: "delta-student",
-
-//     })
-//     let registeredUser = await User.regitster(fakeUser,"helloworld")
-//     res.send(registeredUser)
-// })
-
 // API Calls
 // jo bhi req /listings se start ho wo listing group me bhej do 
 app.use("/listings", listingRouter)
 app.use("/listings/:id/reviews", reviewRouter)
 app.use("/",userRouter)
-
-
 
 // jab koi route match na krega tb chlega ye New route 
 app.use((req, res, next) => {
