@@ -3,7 +3,8 @@ require('dotenv').config();
 const Listing = require('../models/listing.js')
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
 
-let mapToken = process.env.MAP_TOKEN
+let mapToken = process.env.MAPBOX_ACCESS_TOKEN
+
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
 module.exports.index = async (req,res)=>{
