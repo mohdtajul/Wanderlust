@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require("express")
 const app = express()
+
 const mongoose = require("mongoose")
 const path = require("path")
 const methodOverride = require("method-override")
@@ -65,6 +66,9 @@ app.use((req,res,next)=>{
 })
 
 // API Calls
+app.get("/", (req, res) => {
+    res.redirect("/listings");
+});
 // jo bhi req /listings se start ho wo listing group me bhej do 
 app.use("/listings", listingRouter)
 app.use("/listings/:id/reviews", reviewRouter)
