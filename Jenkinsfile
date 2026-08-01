@@ -27,5 +27,20 @@ pipeline {
                 }
             }
         }
+
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub',
+                    usernameVariable: 'DOCKER_USERNAME',
+                    passwordVariable: 'DOCKER_PASSWORD'
+                )]) {
+                    sh '''
+                        docker tag wanderlust "$DOCKER_USERNAME"/wanderlust:latest
+                        docker push "$DOCKER_USERNAME"/wanderlust:latest
+                    '''
+                }
+            }
+        }
     }
 }
