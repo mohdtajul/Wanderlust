@@ -60,7 +60,7 @@ pipeline {
 
                 docker run -d \
                     --name wanderlust \
-                    --env-file /home/ubuntu/.env \
+                    --env-file /var/lib/jenkins/.env
                     -p 3000:8080 \
                     "$DOCKER_USERNAME"/wanderlust:latest
             '''
