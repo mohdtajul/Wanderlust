@@ -8,11 +8,11 @@ pipeline {
             }
         }
 
-        // stage('Build Docker Image') {
-        //     steps {
-        //         sh 'docker build -t wanderlust .'
-        //     }
-        // }
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t wanderlust .'
+            }
+        }
 
         // stage('DockerHub Login') {
         //     steps {
