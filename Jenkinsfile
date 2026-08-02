@@ -67,5 +67,20 @@ pipeline {
         }
             }
         }
+
+        stage('Cleanup') {
+            steps {
+                sh '''
+        echo "Cleaning Docker..."
+
+        docker container prune -f
+        docker image prune -af
+        docker builder prune -af
+        docker system prune -af --volumes || true
+
+        echo "Cleanup Completed"
+        '''
+            }
+        }
     }
 }
