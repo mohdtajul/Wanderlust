@@ -1,196 +1,251 @@
-🌍 Wanderlust – Full Stack Web Application
+# 🚀 Wanderlust – End-to-End CI/CD Deployment Pipeline
 
-Wanderlust is a full-stack web application inspired by platforms like Airbnb, designed to manage travel listings. Users can explore destinations, view detailed listings, and perform full CRUD operations.
-This project focuses on real-world backend development, cloud database integration, and production deployment.
+> A production-style DevOps implementation demonstrating automated Continuous Integration and Continuous Deployment (CI/CD) using Jenkins, Docker, Docker Hub, GitHub Webhooks, and AWS EC2.
 
-🚀 Live Demo:
-👉 https://wonderlust-app-4uac.onrender.com/
+---
 
-📂 GitHub Repository:
-👉 https://github.com/mohdtajul/Wanderlust.git
+# 🌍 Deployment Status
 
-🛠️ Tech Stack
+The application has been successfully deployed and tested on AWS EC2 using an automated Jenkins CI/CD pipeline.
 
-Frontend
-- EJS (Embedded JavaScript Templates)
+🔗 **Live Demo:**  
+http://3.108.64.76:3000/listings
 
-- CSS / Bootstrap
+> **Note:** This application is hosted on an AWS EC2 instance. If the above link is unavailable, the EC2 instance may have been stopped or the AWS Free Tier resources may have expired. However, the complete CI/CD pipeline (GitHub Webhooks → Jenkins → Docker Hub → AWS EC2) has been successfully implemented and verified.
 
-Backend
+> Hosted on an AWS EC2 instance using Docker and deployed automatically through a Jenkins CI/CD pipeline.
 
-- Node.js
+---
 
-- Express.js
+## 📌 Overview
 
-- Database
+This project showcases a complete DevOps workflow by automating the deployment of a Dockerized Node.js application.
 
-- MongoDB Atlas (Cloud Database)
+Instead of manually deploying every change, the entire deployment lifecycle is automated. Every code push to the GitHub repository triggers a Jenkins pipeline through GitHub Webhooks, builds a Docker image, pushes it to Docker Hub, and deploys the latest version on an AWS EC2 instance.
 
-Deployment
+The project demonstrates industry-standard CI/CD practices using containerized deployments.
 
-- Render (Backend Hosting)
+---
 
-Other Tools & Libraries
+# 🏗️ CI/CD Architecture
 
-- Mongoose (ODM)
-
-- Joi (Server-side validation)
-
-- dotenv (Environment variables)
-
-✨ Features
-
-- 📌 View all travel listings
-
-- ➕ Create new listings
-
-- ✏️ Edit existing listings
-
-- 🗑️ Delete listings
-
-- 📝 Add and manage reviews
-
-- ⚠️ Centralized error handling
-
-- ✅ Server-side validation
-
-- 🌐 MongoDB Atlas cloud database
-
-- 🚀 Deployed to production using Render
-
-🔒 Authentication & Authorization are planned for future versions.
-
-## 📸 Screenshots
-
-### Home Page
-![Home Page](Screenshots/Home_Page.png)
-
-### Listing Details
-![Listing Details](Screenshots/Listing_Details.png)
-
-### Add New Listing
-![Add Listing](Screenshots/New_Listing.png)
-
-### Edit Listing
-![Edit Listing](Screenshots/Edit_Listing.png)
-
-
-## 📂 Project Structure
-```bash
-Wanderlust/
-│
-├── init/
-│   ├── data.js
-│   └── index.js
-│
-├── models/
-│   ├── listing.js
-│   └── reviews.js
-│
-├── public/
-│   ├── css/
-│   └── js/
-│
-├── utils/
-│   ├── ExpressError.js
-│   └── wrapAsync.js
-│
-├── views/
-│   ├── includes/
-│   ├── layouts/
-│   ├── listings/
-│   │   ├── index.ejs
-│   │   ├── show.ejs
-│   │   ├── edit.ejs
-│   │   └── newplace.ejs
-│   └── error.ejs
-│
-├── app.js
-├── package.json
-├── .env
-└── README.md
+```
+Developer
+     │
+     │ Git Push
+     ▼
+ GitHub Repository
+     │
+     │ GitHub Webhook
+     ▼
+ Jenkins Pipeline
+     │
+     ├── Clone Repository
+     ├── Build Docker Image
+     ├── Docker Hub Login
+     ├── Push Docker Image
+     ├── Stop Old Container
+     ├── Remove Old Container
+     ├── Pull Latest Image
+     └── Deploy New Container
+     │
+     ▼
+ AWS EC2 Instance
+     │
+     ▼
+ Docker Container
+     │
+     ▼
+ Wanderlust Application
 ```
 
-⚙️ Environment Variables
+---
 
-To run this project, create a .env file and add:
+# 🚀 CI/CD Pipeline
 
-DB_URL=your_mongodb_atlas_connection_string
+The Jenkins pipeline automatically performs the following stages whenever new code is pushed to GitHub.
+
+### ✅ Clone Repository
+
+Fetches the latest source code from GitHub.
+
+---
+
+### ✅ Build Docker Image
+
+Builds a Docker image using the Dockerfile.
+
+---
+
+### ✅ Docker Hub Authentication
+
+Authenticates securely using Jenkins Credentials.
+
+---
+
+### ✅ Push Docker Image
+
+Pushes the latest Docker image to Docker Hub.
+
+---
+
+### ✅ Stop Previous Container
+
+Stops the currently running container before deployment.
+
+---
+
+### ✅ Remove Previous Container
+
+Removes the old container to avoid conflicts.
+
+---
+
+### ✅ Pull Latest Docker Image
+
+Downloads the latest Docker image from Docker Hub.
+
+---
+
+### ✅ Deploy Application
+
+Runs a fresh Docker container on the AWS EC2 instance.
+
+---
+
+# 🛠️ Tech Stack
+
+## DevOps
+
+- Jenkins
+- GitHub Webhooks
+- Docker
+- Docker Hub
+- AWS EC2
+
+## Backend
+
+- Node.js
+- Express.js
+
+## Database
+
+- MongoDB Atlas
+
+## Version Control
+
+- Git
+- GitHub
+
+---
+
+# 📂 Project Structure
+
+```
+.
+├── Dockerfile
+├── Jenkinsfile
+├── package.json
+├── app.js
+├── controllers/
+├── models/
+├── routes/
+├── views/
+├── public/
+└── utils/
+```
+
+---
+
+# 🐳 Docker
+
+### Build Docker Image
+
+```bash
+docker build -t wanderlust .
+```
+
+### Run Docker Container
+
+```bash
+docker run -d -p 3000:8080 wanderlust
+```
+
+---
+
+# ☁️ AWS EC2 Deployment
+
+The application is deployed inside a Docker container on an AWS EC2 Ubuntu instance.
+
+Deployment is completely automated through Jenkins.
+
+No manual deployment is required after every code push.
+
+---
+
+# 🔄 GitHub Webhooks
+
+GitHub Webhooks automatically trigger Jenkins whenever a new commit is pushed to the repository.
+
+This enables a fully automated Continuous Integration and Continuous Deployment workflow.
+
+---
+
+# 🔐 Jenkins Credentials
+
+Sensitive credentials such as Docker Hub Username and Password are securely managed using Jenkins Credentials.
+
+No secrets are stored inside the source code.
+
+---
+
+# 📸 Pipeline Demonstration
+
+Successfully implemented and tested:
+
+- ✅ GitHub Webhook Trigger
+- ✅ Jenkins Pipeline
+- ✅ Docker Image Build
+- ✅ Docker Hub Push
+- ✅ Automated EC2 Deployment
+- ✅ Docker Container Deployment
+- ✅ Zero Manual Deployment
 
 
-These environment variables are securely configured on Render for production.
+---
 
-🧪 Run Locally
+# ⭐ DevOps Highlights
 
-1️⃣ Clone the repository
+- End-to-End CI/CD Pipeline
+- GitHub Webhook Integration
+- Automated Docker Image Build
+- Automated Docker Hub Push
+- Automated EC2 Deployment
+- Dockerized Application
+- Jenkins Credentials Management
+- Zero Manual Deployment
+- Production-style Deployment Workflow
 
-git clone https://github.com/mohdtajul/Wanderlust.git
+---
 
+# 🚀 Future Improvements
 
-2️⃣ Go to project directory
+- Nginx Reverse Proxy
+- HTTPS using Let's Encrypt
+- AWS Load Balancer
+- Kubernetes Deployment
+- GitHub Actions Pipeline
+- Monitoring with Prometheus & Grafana
+- Terraform Infrastructure as Code
 
-3️⃣ Install dependencies
+---
 
-npm install
+# 👨‍💻 Author
 
-
-4️⃣ Add environment variables
-
-DB_URL=your_mongodb_url
-
-5️⃣ Start the server
-
-npm start
-
-
-6️⃣ Open in browser
-
-http://localhost:PORT
-
-🚀 Deployment
-
-- Backend deployed on Render
-
-- Database hosted on MongoDB Atlas
-
-- Secure environment variables configured on Render
-
-- Automatic deployment from GitHub repository
-
-🧠 Learning Outcomes
-
-- Built a full-stack CRUD application using Express and MongoDB
-
-- Migrated database from local MongoDB Compass to MongoDB Atlas
-
-- Implemented MVC architecture
-
-- Handled errors using custom middleware
-
-- Used environment variables for secure configuration
-
-- Deployed a Node.js application to Render
-
-- Understood free-tier hosting limitations (cold starts)
-
-🚧 Future Enhancements
-
-- User Authentication & Authorization
-
-- Image uploads with Cloudinary
-
-- Flash messages and UI improvements
-
-- Search and filter listings
-
-- Role-based access control
-
-👤 Author
-
-Mohd Tajul
+**Mohd Tajul**
 
 - GitHub: https://github.com/mohdtajul
 
-- Project Repo: https://github.com/mohdtajul/Wanderlust.git
+---
 
-⭐ If you find this project helpful, consider giving it a star!
+## ⭐ If you found this project useful, consider giving it a Star.
