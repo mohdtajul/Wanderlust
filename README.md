@@ -240,6 +240,12 @@ Successfully implemented and tested:
 
 ---
 
+## EC2 Infrastructure Setup
+
+The infrastructure setup script is available at:
+
+infrastructure/setup-ec2.sh
+
 # 👨‍💻 Author
 
 **Mohd Tajul**
